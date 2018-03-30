@@ -1,0 +1,21 @@
+
+Instructions:
+------------------------------------------------------------------------------------------------------
+* Download and Install XAMPP web server.
+
+* Once XAMPP is installed, copy the upload folder to C:\xampp\htdocs location.
+
+* RUN xampp-control.exe from C:\xampp location.
+
+
+
+* click Start present beside Apache.
+
+* Once Apache Status change detected:running, Open web browser and type "http://localhost/upload/index.html" in browser URL.
+
+* Image and Video files can be uploaded with several supported formats and limited size.
+
+* The files are uploaded to local G:\ Drive and can be changed according to need.
+--------------------------------------------------------------------------------------------------------
+
+Thank you

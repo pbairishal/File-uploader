@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <title>File Uploader</title>
+</head> 
+  
+<style>   
+#fileinfo {
+  color: #aaa;
+  display: none;
+  font-size: 10pt;
+  font-style: italic;
+  margin-top: 10px;
+}
+
+#error,#warnsize {
+  color: red;
+  display: none;
+  font-size: 13pt;
+  margin-top: 10px;
+}
+
+#error1 {
+  color: #aaa;
+  font-size: 12pt;
+  font-style: italic;
+}
+
+input {
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 14pt;
+  padding: 5px 10px;
+  margin-top: 10px;
+}
+
+input[type=submit] {
+  background-color: lightgrey;
+  margin-top: 5px;
+}       
+</style>
+
+<body>
+	<div class="container">
+		<h2>File(Image or Video) Uploader</h2>
+		<div class="upload_form_cont">
+			<form id="upload_form" enctype="multipart/form-data" method="post">
+				<div>
+					<div>
+						<strong>Please select Image/Video file:</strong>
+					</div>
+					<div>
+						<input type="file" name="image_file" id="image_file" onchange="fileSelected();" />
+					</div>
+				</div>
+				<div>
+					<input type="submit" name="submit" value="Upload" id="button" />
+				</div>
+				<div id="fileinfo">
+					<div id="filename"></div>
+					<div id="filesize"></div>
+					<div id="filetype"></div>
+				</div>
+				<div id="error">You should select valid image/video files only!
+					<br>
+						<div id="error1">SUPPORTED FORMATS:bmp, gif, jpeg, jpg, png, tiff for image files and avi, mp4, flv, mov, wmv for video files.</div>
+					</div>
+					<div id="warnsize">Your file is very big. Please select a file within 100Kb for image files or 1MB for video files.</div>
+				</form>
+			</div>
+		</div>
+	</body>
+</html>  
+  
+  
+<script type="text/javascript">
+       // common variables
+       var iMaxFilesizeImage = 100000; // 100KB
+       var iMaxFilesizeVideo = 1000000; // 1MB
+       var sResultFileSize = '';
+
+       // calculating the size of file
+       function bytesToSize(bytes) {
+        var sizes = ['Bytes', 'KB', 'MB'];
+        if (bytes == 0) return 'n/a';
+        var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+        return (bytes / Math.pow(1024, i)).toFixed(1) + ' ' + sizes[i];
+       };
+
+       function fileSelected() {
+
+        // get selected file element
+        var oFile = document.getElementById('image_file').files[0];
+
+        // display some image information
+        sResultFileSize = bytesToSize(oFile.size);
+        document.getElementById('fileinfo').style.display = 'block';
+        document.getElementById('filename').innerHTML = 'Name: ' + oFile.name;
+        document.getElementById('filesize').innerHTML = 'Size: ' + sResultFileSize;
+        document.getElementById('filetype').innerHTML = 'Type: ' + oFile.type;
+
+        // filter for image files
+        var rFilter = /^(image\/bmp|image\/gif|image\/jpeg|image\/png|image\/tiff|video\/avi|video\/mp4|video\/flv|video\/mov|video\/wmv)$/i;
+        var rFilterImage = /^(image\/bmp|image\/gif|image\/jpeg|image\/png|image\/tiff)$/i;
+        var rFilterVideo = /^(video\/avi|video\/mp4|video\/flv|video\/mov|video\/wmv)$/i;
+
+        if (!rFilter.test(oFile.type)) {
+         document.getElementById('error').style.display = 'block';
+         return;
+        }
+
+        // test for filesize
+        if (oFile.size > iMaxFilesizeImage && rFilterImage.test(oFile.type) || oFile.size > iMaxFilesizeVideo && rFilterVideo.test(oFile.type)) {
+         document.getElementById('warnsize').style.display = 'block';
+         return;
+        }
+
+        // form data for POSTing
+        document.getElementById('upload_form').action = "upload.php";
+       }
+</script>
+
